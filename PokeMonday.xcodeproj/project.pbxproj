@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9B2686762DD16FCF00F00478 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9B2686752DD16FCF00F00478 /* RxSwift */; };
+		9B2686792DD16FDD00F00478 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9B2686782DD16FDD00F00478 /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		9B4807A52DD0D2B6003DFB12 /* PokeMonday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokeMonday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B2686762DD16FCF00F00478 /* RxSwift in Frameworks */,
+				9B2686792DD16FDD00F00478 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +85,8 @@
 			);
 			name = PokeMonday;
 			packageProductDependencies = (
+				9B2686752DD16FCF00F00478 /* RxSwift */,
+				9B2686782DD16FDD00F00478 /* SnapKit */,
 			);
 			productName = PokeMonday;
 			productReference = 9B4807A52DD0D2B6003DFB12 /* PokeMonday.app */;
@@ -107,6 +116,10 @@
 			);
 			mainGroup = 9B48079C2DD0D2B6003DFB12;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9B2686742DD16FCF00F00478 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				9B2686772DD16FDD00F00478 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9B4807A62DD0D2B6003DFB12 /* Products */;
 			projectDirPath = "";
@@ -151,6 +164,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -177,6 +191,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -331,6 +346,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9B2686742DD16FCF00F00478 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
+		9B2686772DD16FDD00F00478 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9B2686752DD16FCF00F00478 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9B2686742DD16FCF00F00478 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		9B2686782DD16FDD00F00478 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9B2686772DD16FDD00F00478 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9B48079D2DD0D2B6003DFB12 /* Project object */;
 }
