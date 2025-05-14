@@ -14,7 +14,7 @@ enum NetworkError: Error {
     var errorTitle: String {
         switch self {
         case .invalidUrl: return "잘못된 링크입니다"
-        case .dataFetchFail: return "데이터 패치 실패"
+        case .dataFetchFail: return "데이터 불러오기 실패"
         }
     }
 }
