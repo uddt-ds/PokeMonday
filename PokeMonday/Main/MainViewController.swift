@@ -100,7 +100,9 @@ final class MainViewController: BaseViewController {
 }
 
 extension MainViewController: UICollectionViewDelegate {
-    // 작성 예정
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("\(indexPath.row)번째 버튼이 눌렸습니다")
+    }
 }
 
 extension MainViewController: UICollectionViewDataSource {

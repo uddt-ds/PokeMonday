@@ -59,6 +59,3 @@ extension DetailPokeData.Sprites.Other {
         }
     }
 }
-
-// typealias OtherData = DetailPokeData.Sprites.Other.OfficialArtwork
-// (얘는 타입이니까 타입 자체에서 프로퍼티에 접근하는게 아님)
