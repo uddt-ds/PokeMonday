@@ -46,13 +46,13 @@ final class MainViewController: BaseViewController {
         super.setupConstraints()
 
         logoImageView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(10)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(-30)
             $0.size.equalTo(100)
             $0.centerX.equalToSuperview()
         }
 
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(logoImageView.snp.bottom).offset(10)
+            $0.top.equalTo(logoImageView.snp.bottom).offset(20)
             $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }

@@ -48,7 +48,7 @@ final class DetailView: UIView {
 
         [typeLabel, heightLabel, weightLabel].forEach {
             $0.textColor = .white
-            $0.font = .systemFont(ofSize: 25)
+            $0.font = .systemFont(ofSize: 20)
         }
     }
 
@@ -74,12 +74,24 @@ final class DetailView: UIView {
                 let image = try UIImage(data: Data(contentsOf: url))
                 DispatchQueue.main.async {
                     self.imageView.image = image
-                    self.titleLabel.text = "No.\(detailPokeData.id) \(detailPokeData.name)"
-                    if detailPokeData.types.count == 2 {
-                        self.typeLabel.text = "Type: \(detailPokeData.types[0].type.name), \(detailPokeData.types[1].type.name)"
-                    } else {
-                        self.typeLabel.text = "Type: \(detailPokeData.types[0].type.name)"
+
+                    let pokemonName = detailPokeData.name
+                    let koreanName = PokemonTranslator.getKoreanName(for: pokemonName)
+                    self.titleLabel.text = "No.\(detailPokeData.id) \(koreanName)"
+
+                    guard let pokemonType = PokemonTypeName(rawValue: detailPokeData.types[0].type.name)?.displayName else {
+                        return
                     }
+
+                    if detailPokeData.types.count == 2 {
+                        guard let pokemonType2 = PokemonTypeName(rawValue: detailPokeData.types[1].type.name)?.displayName else {
+                            return
+                        }
+                        self.typeLabel.text = "Type: \(pokemonType), \(pokemonType2)"
+                    } else {
+                        self.typeLabel.text = "Type: \(pokemonType)"
+                    }
+
                     self.heightLabel.text = "height: \(detailPokeData.height)"
                     self.weightLabel.text = "weight: \(detailPokeData.weight)"
                 }
