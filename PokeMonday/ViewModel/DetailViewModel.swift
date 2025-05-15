@@ -12,20 +12,11 @@ final class DetailViewModel {
 
     private let disposeBag = DisposeBag()
 
-    let detailPokeSubject: PublishSubject<DetailPokeData>
+    let detailPokeSubject = PublishSubject<DetailPokeData>()
 
-    init(detailPokeSubject: PublishSubject<DetailPokeData>) {
-        self.detailPokeSubject = detailPokeSubject
-        fetchDetailPokeData()
-    }
-
-
-    func fetchDetailPokeData(pokemonName: String? = nil) {
-        guard let pokemonName else {
-            return
-        }
-        guard let url = NetworkManager.shared.detailPokeUrl(pokemonName: pokemonName) else {
-            detailPokeSubject.onError(NetworkError.invalidUrl)
+    func fetchDetailPokeData(pokemonUrl: String) {
+        
+        guard let url = URL(string: pokemonUrl) else {
             return
         }
 

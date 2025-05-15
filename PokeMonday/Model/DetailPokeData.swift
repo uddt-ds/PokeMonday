@@ -45,7 +45,7 @@ extension DetailPokeData.Sprites {
         let officialArtwork: OfficialArtwork
 
         enum CodingKeys: String, CodingKey {
-            case officialArtwork = "official-Artwork"
+            case officialArtwork = "official-artwork"
         }
     }
 }

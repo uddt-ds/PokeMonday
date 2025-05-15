@@ -18,26 +18,9 @@ final class DetailView: UIView {
 
     private let stackView = UIStackView()
 
-    // 목데이터
-    private let samplePokedata =
-    DetailPokeData(
-        height: 10, id: 1, name: "샘플",
-        species: DetailPokeData.Species(name: "샘플", url: ""),
-        sprites: DetailPokeData.Sprites(
-            other: DetailPokeData.Sprites.Other(
-                officialArtwork: DetailPokeData.Sprites.Other.OfficialArtwork(
-                    frontDefault: ""))),
-        types: [
-        DetailPokeData.TypeElement(slot: 1, type: DetailPokeData.TypeElement.pokeType(
-            name: "독", url: "")),
-        DetailPokeData.TypeElement(slot: 2, type: DetailPokeData.TypeElement.pokeType(
-            name: "풀", url: ""))], weight: 10
-    )
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
-        setDetailStackView(detailPokeData: samplePokedata)
         setConstraints()
     }
     
@@ -45,7 +28,7 @@ final class DetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configureUI() {
+    private func configureUI() {
         self.addSubview(stackView)
 
         [imageView, titleLabel, typeLabel, heightLabel, weightLabel].forEach {
@@ -69,7 +52,7 @@ final class DetailView: UIView {
         }
     }
 
-    func setConstraints() {
+    private func setConstraints() {
         stackView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide)
             $0.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(30)
@@ -82,10 +65,27 @@ final class DetailView: UIView {
     }
 
     func setDetailStackView(detailPokeData: DetailPokeData) {
-        imageView.image = UIImage(systemName: "questionmark")
-        titleLabel.text = "No.\(detailPokeData.id) \(detailPokeData.name)"
-        typeLabel.text = "\(detailPokeData.types[0].type.name), \(detailPokeData.types[1].type.name)"
-        heightLabel.text = "\(detailPokeData.height)"
-        weightLabel.text = "\(detailPokeData.weight)"
+        DispatchQueue.global().async {
+            guard let url = URL(
+                string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/\(detailPokeData.id).png"
+            ) else { return }
+
+            do {
+                let image = try UIImage(data: Data(contentsOf: url))
+                DispatchQueue.main.async {
+                    self.imageView.image = image
+                    self.titleLabel.text = "No.\(detailPokeData.id) \(detailPokeData.name)"
+                    if detailPokeData.types.count == 2 {
+                        self.typeLabel.text = "Type: \(detailPokeData.types[0].type.name), \(detailPokeData.types[1].type.name)"
+                    } else {
+                        self.typeLabel.text = "Type: \(detailPokeData.types[0].type.name)"
+                    }
+                    self.heightLabel.text = "height: \(detailPokeData.height)"
+                    self.weightLabel.text = "weight: \(detailPokeData.weight)"
+                }
+            } catch {
+                print(NetworkError.dataFetchFail.errorTitle)
+            }
+        }
     }
 }

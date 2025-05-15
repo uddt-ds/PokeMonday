@@ -18,7 +18,7 @@ final class MainViewModel {
         fetchLimitPokeData()
     }
 
-    func fetchLimitPokeData() {
+    private func fetchLimitPokeData() {
         guard let url = NetworkManager.shared.getLimitPokeUrl(limit: "20", offset: "0") else {
             limitPokeSubject.onError(NetworkError.invalidUrl)
             return

@@ -18,7 +18,6 @@ final class MainViewController: BaseViewController {
     private let viewModel = MainViewModel()
 
     private var limitPokeData = [LimitPokeData.shortInfoResult]()
-    private var detailPokeData = [DetailPokeData]()
 
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.setCompositionalLayout())
 
@@ -76,7 +75,7 @@ final class MainViewController: BaseViewController {
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(1/5)
+            heightDimension: .fractionalHeight(1/4.5)
         )
 
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
@@ -96,12 +95,13 @@ final class MainViewController: BaseViewController {
                 print(NetworkError.dataFetchFail)
             }).disposed(by: disposeBag)
     }
-
 }
 
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = DetailViewController()
+        let pokemonUrl = self.limitPokeData[indexPath.row].url
+        detailVC.viewModel.fetchDetailPokeData(pokemonUrl: pokemonUrl)
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
 }
@@ -110,7 +110,7 @@ extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         limitPokeData.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MainCollectionViewCell.self), for: indexPath) as? MainCollectionViewCell else { return .init() }
         cell.updatePokeImage(imageData: limitPokeData[indexPath.row])

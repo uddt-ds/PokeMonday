@@ -34,11 +34,6 @@ final class NetworkManager {
         return makeUrl(path: path, queryItems: queryItems)
     }
 
-    func detailPokeUrl(pokemonName: String) -> URL? {
-        let path = "/api/v2/pokemon"
-        return makeUrl(path: "\(path)/\(pokemonName)")
-    }
-
     func fetch<T: Decodable>(url: URL) -> Single<T> {
         return Single.create { observer in
             var request = URLRequest(url: url)
