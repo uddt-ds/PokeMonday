@@ -24,11 +24,7 @@ extension DetailPokeData {
     }
 
     struct Sprites: Decodable {
-        let frontDefault: String
-
-        enum CodingKeys: String, CodingKey {
-            case frontDefault = "front_default"
-        }
+        let other: Other
     }
 
     struct TypeElement: Decodable {
@@ -44,3 +40,22 @@ extension DetailPokeData.TypeElement {
     }
 }
 
+extension DetailPokeData.Sprites {
+    struct Other: Decodable {
+        let officialArtwork: OfficialArtwork
+
+        enum CodingKeys: String, CodingKey {
+            case officialArtwork = "official-artwork"
+        }
+    }
+}
+
+extension DetailPokeData.Sprites.Other {
+    struct OfficialArtwork: Decodable {
+        let frontDefault: String
+
+        enum CodingKeys: String, CodingKey {
+            case frontDefault = "front_default"
+        }
+    }
+}

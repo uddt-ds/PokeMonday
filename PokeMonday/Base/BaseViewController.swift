@@ -7,6 +7,7 @@
 
 import UIKit
 
+//MARK: 학습 차원에서 적용한 BaseViewController
 class BaseViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -16,7 +17,7 @@ class BaseViewController: UIViewController {
     }
 
     func configureUI() {
-
+        view.backgroundColor = .systemBackground
     }
 
     func setupConstraints() {

@@ -8,18 +8,17 @@
 import UIKit
 import RxSwift
 
-class MainViewModel {
+final class MainViewModel {
 
     private let disposeBag = DisposeBag()
 
-    let limitPokeSubject = BehaviorSubject(value: [LimitPokeData]())
-    let DetailPokeSubject = BehaviorSubject(value: [DetailPokeData]())
+    let limitPokeSubject = BehaviorSubject(value: [LimitPokeData.shortInfoResult]())
 
     init() {
         fetchLimitPokeData()
     }
 
-    func fetchLimitPokeData() {
+    private func fetchLimitPokeData() {
         guard let url = NetworkManager.shared.getLimitPokeUrl(limit: "20", offset: "0") else {
             limitPokeSubject.onError(NetworkError.invalidUrl)
             return
@@ -28,7 +27,7 @@ class MainViewModel {
         NetworkManager.shared.fetch(url: url)
             .subscribe(onSuccess: { [weak self]
                 (limitPokeData: LimitPokeData) in
-                self?.limitPokeSubject.onNext([limitPokeData])
+                self?.limitPokeSubject.onNext(limitPokeData.results)
             }, onFailure: { [weak self] error in
                 self?.limitPokeSubject
                     .onError(NetworkError.dataFetchFail)

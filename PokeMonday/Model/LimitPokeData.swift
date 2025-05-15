@@ -10,7 +10,7 @@ import Foundation
 struct LimitPokeData: Decodable {
     let count: Int
     let next: String
-    let result: [shortInfoResult]
+    let results: [shortInfoResult]
 }
 
 extension LimitPokeData {
