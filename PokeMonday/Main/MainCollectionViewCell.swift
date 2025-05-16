@@ -32,7 +32,7 @@ final class MainCollectionViewCell: BaseCollectionViewCell {
 
     func updatePokeImage(imageData: LimitPokeData.shortInfoResult) {
         // 추후 url 길이에 따라 suffix int값 변경 예정
-        var rawId = imageData.url.suffix(4)
+        var rawId = imageData.url.suffix(5)
         let id = rawId.filter { $0.isNumber }
         guard let url = URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/\(id).png") else {
             return

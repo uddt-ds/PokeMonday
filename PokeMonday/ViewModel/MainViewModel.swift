@@ -12,14 +12,30 @@ final class MainViewModel {
 
     private let disposeBag = DisposeBag()
 
+    var isInfiniteScroll = false
+
+    private var offset = 0
+
     let limitPokeSubject = BehaviorSubject(value: [LimitPokeData.shortInfoResult]())
+//    var limitPokeData = [LimitPokeData.shortInfoResult]()
 
     init() {
         fetchLimitPokeData()
     }
 
+    func offsetChange() {
+        if !isInfiniteScroll {
+            offset = 0
+        } else {
+            offset += 20
+            fetchLimitPokeData()
+            isInfiniteScroll = false
+        }
+    }
+
     private func fetchLimitPokeData() {
-        guard let url = NetworkManager.shared.getLimitPokeUrl(limit: "20", offset: "0") else {
+        
+        guard let url = NetworkManager.shared.getLimitPokeUrl(limit: "20", offset: "\(offset)") else {
             limitPokeSubject.onError(NetworkError.invalidUrl)
             return
         }
