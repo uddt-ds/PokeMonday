@@ -26,4 +26,11 @@ extension UIColor {
         green: 245/255,
         blue: 235/255,
         alpha: 1.0)
+
+    static let btnBackgroundColor = UIColor(
+        red: 41/255,
+        green: 41/255,
+        blue: 41/255,
+        alpha: 1.0
+        )
 }

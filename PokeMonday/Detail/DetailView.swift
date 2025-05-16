@@ -18,6 +18,13 @@ final class DetailView: UIView {
 
     private let stackView = UIStackView()
 
+    private let leftBtn = UIButton()
+    private let rightBtn = UIButton()
+    private let upBtn = UIButton()
+    private let downBtn = UIButton()
+    private let selectABtn = UIButton()
+    private let selectBBtn = UIButton()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
@@ -49,6 +56,65 @@ final class DetailView: UIView {
         [typeLabel, heightLabel, weightLabel].forEach {
             $0.textColor = .white
             $0.font = .systemFont(ofSize: 20)
+        }
+
+        [leftBtn, rightBtn, upBtn, downBtn].forEach {
+            self.addSubview($0)
+            setButton(btn: $0, radius: 9)
+            leftBtn.setImage(UIImage(systemName: "arrowtriangle.left.fill"), for: .normal)
+            
+            rightBtn.setImage(UIImage(systemName: "arrowtriangle.right.fill"), for: .normal)
+            upBtn.setImage(UIImage(systemName: "arrowtriangle.up.fill"), for: .normal)
+            downBtn.setImage(UIImage(systemName: "arrowtriangle.down.fill"), for: .normal)
+        }
+
+        [selectABtn, selectBBtn].forEach {
+            self.addSubview($0)
+            selectABtn.setTitle("A", for: .normal)
+            selectBBtn.setTitle("B", for: .normal)
+            $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+            setButton(btn: $0, radius: 22)
+        }
+
+
+        leftBtn.snp.makeConstraints {
+            $0.top.equalTo(stackView.snp.bottom).offset(137)
+            $0.bottom.equalTo(self.snp.bottom).offset(-163)
+            $0.leading.equalTo(safeAreaLayoutGuide).inset(54)
+            $0.width.equalTo(50)
+        }
+
+        rightBtn.snp.makeConstraints {
+            $0.top.equalTo(leftBtn.snp.top)
+            $0.bottom.equalTo(leftBtn.snp.bottom)
+            $0.leading.equalTo(leftBtn.snp.trailing).offset(34)
+            $0.width.equalTo(50)
+        }
+
+        upBtn.snp.makeConstraints {
+            $0.top.equalTo(stackView.snp.bottom).offset(87)
+            $0.height.equalTo(50)
+            $0.leading.equalTo(leftBtn.snp.trailing)
+            $0.trailing.equalTo(rightBtn.snp.leading)
+        }
+
+        downBtn.snp.makeConstraints {
+            $0.top.equalTo(upBtn.snp.bottom).offset(34)
+            $0.height.equalTo(50)
+            $0.leading.equalTo(upBtn.snp.leading)
+            $0.trailing.equalTo(upBtn.snp.trailing)
+        }
+
+        selectABtn.snp.makeConstraints {
+            $0.size.equalTo(44)
+            $0.top.equalTo(stackView.snp.bottom).offset(111)
+            $0.trailing.equalTo(self.safeAreaLayoutGuide).inset(45)
+            $0.bottom.equalTo(selectBBtn.snp.top).inset(5)
+        }
+
+        selectBBtn.snp.makeConstraints {
+            $0.size.equalTo(44)
+            $0.trailing.equalTo(self.safeAreaLayoutGuide).inset(88)
         }
     }
 
@@ -104,5 +170,10 @@ final class DetailView: UIView {
                 print(NetworkError.dataFetchFail.errorTitle)
             }
         }
+    }
+
+    private func setButton(btn: UIButton, radius: Double) {
+        btn.backgroundColor = .btnBackgroundColor
+        btn.layer.cornerRadius = radius
     }
 }
