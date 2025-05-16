@@ -19,7 +19,10 @@ final class MainViewController: BaseViewController {
 
     private var limitPokeData = [LimitPokeData.shortInfoResult]()
 
-    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.setCompositionalLayout())
+    private lazy var collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: self.setCompositionalLayout()
+    )
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,10 +39,13 @@ final class MainViewController: BaseViewController {
         }
         logoImageView.image = UIImage(named: "pokemonBall")
 
-        collectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: MainCollectionViewCell.self))
+        collectionView.register(MainCollectionViewCell.self,
+                                forCellWithReuseIdentifier: String(describing: MainCollectionViewCell.self)
+        )
         collectionView.backgroundColor = .darkRed
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.isPagingEnabled = true
     }
 
     override func setupConstraints() {
@@ -89,7 +95,7 @@ final class MainViewController: BaseViewController {
         viewModel.limitPokeSubject
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] limitData in
-                self?.limitPokeData = limitData
+                self?.limitPokeData.append(contentsOf: limitData)
                 self?.collectionView.reloadData()
             }, onError: { error in
                 print(NetworkError.dataFetchFail)
@@ -103,6 +109,13 @@ extension MainViewController: UICollectionViewDelegate {
         let pokemonUrl = self.limitPokeData[indexPath.row].url
         detailVC.viewModel.fetchDetailPokeData(pokemonUrl: pokemonUrl)
         self.navigationController?.pushViewController(detailVC, animated: true)
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.bounds.height {
+            viewModel.isInfiniteScroll = true
+            viewModel.offsetChange()
+        }
     }
 }
 

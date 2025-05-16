@@ -87,13 +87,18 @@ final class DetailView: UIView {
                         guard let pokemonType2 = PokemonTypeName(rawValue: detailPokeData.types[1].type.name)?.displayName else {
                             return
                         }
-                        self.typeLabel.text = "Type: \(pokemonType), \(pokemonType2)"
+                        self.typeLabel.text = "타입: \(pokemonType), \(pokemonType2)"
                     } else {
-                        self.typeLabel.text = "Type: \(pokemonType)"
+                        self.typeLabel.text = "타입: \(pokemonType)"
                     }
 
-                    self.heightLabel.text = "height: \(detailPokeData.height)"
-                    self.weightLabel.text = "weight: \(detailPokeData.weight)"
+                    let height = Measurement(value: (Double(detailPokeData.height) / 10),
+                                             unit: UnitLength.meters)
+                    self.heightLabel.text = "키: \(height)"
+
+                    let weight = Measurement(value: (Double(detailPokeData.weight) / 10),
+                                             unit: UnitMass.kilograms)
+                    self.weightLabel.text = "몸무게: \(weight)"
                 }
             } catch {
                 print(NetworkError.dataFetchFail.errorTitle)
