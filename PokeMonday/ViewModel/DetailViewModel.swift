@@ -7,12 +7,13 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 final class DetailViewModel {
 
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
 
-    let detailPokeSubject = PublishSubject<DetailPokeData>()
+    let detailPokeRelay = BehaviorRelay<DetailPokeData?>(value: nil)
 
     func fetchDetailPokeData(pokemonUrl: String) {
         
@@ -22,9 +23,7 @@ final class DetailViewModel {
 
         NetworkManager.shared.fetch(url: url)
             .subscribe(onSuccess: { [weak self] (detailPokeData: DetailPokeData) in
-                self?.detailPokeSubject.onNext(detailPokeData)
-            }, onFailure: { [weak self] error in
-                self?.detailPokeSubject.onError(NetworkError.dataFetchFail)
+                self?.detailPokeRelay.accept(detailPokeData)
             }).disposed(by: disposeBag)
     }
 

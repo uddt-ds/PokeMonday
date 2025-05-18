@@ -48,7 +48,7 @@ final class NetworkManager {
                 guard let data = data,
                       let response = response as? HTTPURLResponse,
                       (200..<300).contains(response.statusCode) else {
-                    observer(.failure(NetworkError.dataFetchFail))
+                    observer(.failure(NetworkError.failRequest))
                     return
                 }
 
