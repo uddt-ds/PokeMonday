@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class MainCollectionViewCell: BaseCollectionViewCell {
 
@@ -38,15 +39,8 @@ final class MainCollectionViewCell: BaseCollectionViewCell {
             return
         }
 
-        // 추후 KingFisher 적용 예정
-        DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self.imageView.image = image
-                    }
-                }
-            }
+        DispatchQueue.main.async { [weak self] in
+            self?.imageView.kf.setImage(with: url)
         }
     }
 }
