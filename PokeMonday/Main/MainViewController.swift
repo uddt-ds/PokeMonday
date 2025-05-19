@@ -13,12 +13,12 @@ final class MainViewController: BaseViewController {
 
     private let logoImageView = UIImageView()
 
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
 
     private let viewModel = MainViewModel()
 
     private var limitPokeData = [LimitPokeData.shortInfoResult]()
-
+    
     private lazy var collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: self.setCompositionalLayout()
@@ -28,7 +28,7 @@ final class MainViewController: BaseViewController {
         super.viewDidLoad()
         bind()
     }
-
+    
     override func configureUI() {
         super.configureUI()
 
@@ -43,9 +43,6 @@ final class MainViewController: BaseViewController {
                                 forCellWithReuseIdentifier: String(describing: MainCollectionViewCell.self)
         )
         collectionView.backgroundColor = .darkRed
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.isPagingEnabled = true
     }
 
     override func setupConstraints() {
@@ -63,13 +60,14 @@ final class MainViewController: BaseViewController {
         }
     }
 
-
+    // MARK: CompositionalLayout 적용
     private func setCompositionalLayout() -> UICollectionViewCompositionalLayout {
         let layout = UICollectionViewCompositionalLayout(section: createCollectionViewSection())
         return layout
     }
 
 
+    // MARK: CollectionView 내부 세팅
     private func createCollectionViewSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1/3),
@@ -91,42 +89,43 @@ final class MainViewController: BaseViewController {
         return section
     }
 
+    // MARK: 데이터 바인딩하는 메서드
     private func bind() {
-        viewModel.limitPokeSubject
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] limitData in
-                self?.limitPokeData.append(contentsOf: limitData)
-                self?.collectionView.reloadData()
-            }, onError: { error in
-                print(NetworkError.dataFetchFail)
-            }).disposed(by: disposeBag)
-    }
-}
+        viewModel.limitPokeRelay
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(collectionView.rx.items(cellIdentifier: String(describing: MainCollectionViewCell.self), cellType: MainCollectionViewCell.self)) {
+                (row, element, cell) in
+                cell.updatePokeImage(imageData: element)
+            }
+            .disposed(by: disposeBag)
 
-extension MainViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailVC = DetailViewController()
-        let pokemonUrl = self.limitPokeData[indexPath.row].url
-        detailVC.viewModel.fetchDetailPokeData(pokemonUrl: pokemonUrl)
-        self.navigationController?.pushViewController(detailVC, animated: true)
-    }
+        collectionView.rx.contentOffset
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(onNext: { [weak self] offset in
+                guard let self else { return }
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.bounds.height {
-            viewModel.isInfiniteScroll = true
-            viewModel.offsetChange()
-        }
-    }
-}
+                let contentHeight = self.collectionView.contentSize.height
+                let collectionViewHeight = self.collectionView.bounds.height
 
-extension MainViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        limitPokeData.count
-    }
+                if offset.y > (contentHeight - collectionViewHeight - 180),
+                    viewModel.isInfiniteScroll == false {
+                    self.viewModel.isInfiniteScroll = true
+                    self.viewModel.offsetChange()
+                }
+            })
+            .disposed(by: disposeBag)
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MainCollectionViewCell.self), for: indexPath) as? MainCollectionViewCell else { return .init() }
-        cell.updatePokeImage(imageData: limitPokeData[indexPath.row])
-        return cell
+        collectionView.rx.itemSelected
+            .asDriver(onErrorDriveWith: .empty())
+            .drive { [weak self] indexPath in
+                guard let self else { return }
+                let detailVC = DetailViewController()
+                let pokemonData = self.viewModel.limitPokeRelay.value
+                let selectedPokemonUrl = pokemonData[indexPath.item].url
+                detailVC.viewModel.fetchDetailPokeData(pokemonUrl: selectedPokemonUrl)
+                self.navigationController?.pushViewController(detailVC, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
 }

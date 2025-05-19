@@ -136,38 +136,32 @@ final class DetailView: UIView {
                 string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/\(detailPokeData.id).png"
             ) else { return }
 
-            do {
-                let image = try UIImage(data: Data(contentsOf: url))
-                DispatchQueue.main.async {
-                    self.imageView.image = image
+            DispatchQueue.main.async { [weak self] in
+                self?.imageView.kf.setImage(with: url)
+                let pokemonName = detailPokeData.name
+                let koreanName = PokemonTranslator.getKoreanName(for: pokemonName)
+                self?.titleLabel.text = "No.\(detailPokeData.id) \(koreanName)"
 
-                    let pokemonName = detailPokeData.name
-                    let koreanName = PokemonTranslator.getKoreanName(for: pokemonName)
-                    self.titleLabel.text = "No.\(detailPokeData.id) \(koreanName)"
+                guard let pokemonType = PokemonTypeName(rawValue: detailPokeData.types[0].type.name)?.displayName else {
+                    return
+                }
 
-                    guard let pokemonType = PokemonTypeName(rawValue: detailPokeData.types[0].type.name)?.displayName else {
+                if detailPokeData.types.count == 2 {
+                    guard let pokemonType2 = PokemonTypeName(rawValue: detailPokeData.types[1].type.name)?.displayName else {
                         return
                     }
-
-                    if detailPokeData.types.count == 2 {
-                        guard let pokemonType2 = PokemonTypeName(rawValue: detailPokeData.types[1].type.name)?.displayName else {
-                            return
-                        }
-                        self.typeLabel.text = "타입: \(pokemonType), \(pokemonType2)"
-                    } else {
-                        self.typeLabel.text = "타입: \(pokemonType)"
-                    }
-
-                    let height = Measurement(value: (Double(detailPokeData.height) / 10),
-                                             unit: UnitLength.meters)
-                    self.heightLabel.text = "키: \(height)"
-
-                    let weight = Measurement(value: (Double(detailPokeData.weight) / 10),
-                                             unit: UnitMass.kilograms)
-                    self.weightLabel.text = "몸무게: \(weight)"
+                    self?.typeLabel.text = "타입: \(pokemonType), \(pokemonType2)"
+                } else {
+                    self?.typeLabel.text = "타입: \(pokemonType)"
                 }
-            } catch {
-                print(NetworkError.dataFetchFail.errorTitle)
+
+                let height = Measurement(value: (Double(detailPokeData.height) / 10),
+                                         unit: UnitLength.meters)
+                self?.heightLabel.text = "키: \(height)"
+
+                let weight = Measurement(value: (Double(detailPokeData.weight) / 10),
+                                         unit: UnitMass.kilograms)
+                self?.weightLabel.text = "몸무게: \(weight)"
             }
         }
     }

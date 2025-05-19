@@ -13,7 +13,7 @@ final class DetailViewController: BaseViewController {
     private var detailPokeData: DetailPokeData?
     let viewModel = DetailViewModel()
 
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
 
     override func loadView() {
         self.view = DetailView()
@@ -34,10 +34,10 @@ final class DetailViewController: BaseViewController {
     }
 
     private func bind() {
-        viewModel.detailPokeSubject
+        viewModel.detailPokeRelay
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
-                if let detailView = self?.view as? DetailView {
+                if let data, let detailView = self?.view as? DetailView {
                     detailView.setDetailStackView(detailPokeData: data)
                 }
             }, onError: { error in

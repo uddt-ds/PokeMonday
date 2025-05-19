@@ -7,46 +7,45 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 final class MainViewModel {
 
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
 
-    var isInfiniteScroll = false
+    let limitPokeRelay = BehaviorRelay(value: [LimitPokeData.shortInfoResult]())
 
     private var offset = 0
 
-    let limitPokeSubject = BehaviorSubject(value: [LimitPokeData.shortInfoResult]())
-//    var limitPokeData = [LimitPokeData.shortInfoResult]()
+    // 무한 스크롤 적용을 위한 Flag
+    var isInfiniteScroll = false
 
     init() {
         fetchLimitPokeData()
     }
 
+    // url 뒤에 들어가는 offset 값을 변경해주는 메서드
     func offsetChange() {
         if !isInfiniteScroll {
             offset = 0
         } else {
             offset += 20
             fetchLimitPokeData()
-            isInfiniteScroll = false
         }
     }
 
     private func fetchLimitPokeData() {
-        
         guard let url = NetworkManager.shared.getLimitPokeUrl(limit: "20", offset: "\(offset)") else {
-            limitPokeSubject.onError(NetworkError.invalidUrl)
             return
         }
 
         NetworkManager.shared.fetch(url: url)
-            .subscribe(onSuccess: { [weak self]
-                (limitPokeData: LimitPokeData) in
-                self?.limitPokeSubject.onNext(limitPokeData.results)
-            }, onFailure: { [weak self] error in
-                self?.limitPokeSubject
-                    .onError(NetworkError.dataFetchFail)
-            }).disposed(by: disposeBag)
+            .asDriver(onErrorDriveWith: .empty())
+            .drive(onNext: { [weak self] (data: LimitPokeData) in
+                guard let currentData = self?.limitPokeRelay.value else { return () }
+                self?.limitPokeRelay.accept(currentData + data.results)
+                self?.isInfiniteScroll = false
+            })
+            .disposed(by: disposeBag)
     }
 }

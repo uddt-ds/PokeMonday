@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class MainCollectionViewCell: BaseCollectionViewCell {
 
@@ -30,22 +31,19 @@ final class MainCollectionViewCell: BaseCollectionViewCell {
         imageView.backgroundColor = .white
     }
 
+    // 포켓몬스터 이미지를 불러오는 메서드
     func updatePokeImage(imageData: LimitPokeData.shortInfoResult) {
-        // 추후 url 길이에 따라 suffix int값 변경 예정
-        var rawId = imageData.url.suffix(5)
-        let id = rawId.filter { $0.isNumber }
-        guard let url = URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/\(id).png") else {
-            return
-        }
+        // url 뒤 id 값을 받아오기 위한 로직
+        if imageData.url.count > 26 {
+            let num = imageData.url.count - 26
+            let rawId = imageData.url.suffix(num)
+            let id = rawId.filter { $0.isNumber }
+            guard let url = URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/\(id).png") else {
+                return
+            }
 
-        // 추후 KingFisher 적용 예정
-        DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self.imageView.image = image
-                    }
-                }
+            DispatchQueue.main.async { [weak self] in
+                self?.imageView.kf.setImage(with: url)
             }
         }
     }

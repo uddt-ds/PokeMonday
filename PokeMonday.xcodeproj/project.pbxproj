@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B22E7302DD9914300AF5F66 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9B22E72F2DD9914300AF5F66 /* Kingfisher */; };
 		9B2686762DD16FCF00F00478 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9B2686752DD16FCF00F00478 /* RxSwift */; };
 		9B2686792DD16FDD00F00478 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9B2686782DD16FDD00F00478 /* SnapKit */; };
+		9BC9F8B32DD9A92B0014DED7 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 9BC9F8B22DD9A92B0014DED7 /* RxCocoa */; };
+		9BC9F8B52DD9A92B0014DED7 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 9BC9F8B42DD9A92B0014DED7 /* RxRelay */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,7 +44,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BC9F8B52DD9A92B0014DED7 /* RxRelay in Frameworks */,
+				9B22E7302DD9914300AF5F66 /* Kingfisher in Frameworks */,
 				9B2686762DD16FCF00F00478 /* RxSwift in Frameworks */,
+				9BC9F8B32DD9A92B0014DED7 /* RxCocoa in Frameworks */,
 				9B2686792DD16FDD00F00478 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -53,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				9B4807A72DD0D2B6003DFB12 /* PokeMonday */,
+				9BC9F8B12DD9A92B0014DED7 /* Frameworks */,
 				9B4807A62DD0D2B6003DFB12 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,6 +70,13 @@
 				9B4807A52DD0D2B6003DFB12 /* PokeMonday.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9BC9F8B12DD9A92B0014DED7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,6 +101,9 @@
 			packageProductDependencies = (
 				9B2686752DD16FCF00F00478 /* RxSwift */,
 				9B2686782DD16FDD00F00478 /* SnapKit */,
+				9B22E72F2DD9914300AF5F66 /* Kingfisher */,
+				9BC9F8B22DD9A92B0014DED7 /* RxCocoa */,
+				9BC9F8B42DD9A92B0014DED7 /* RxRelay */,
 			);
 			productName = PokeMonday;
 			productReference = 9B4807A52DD0D2B6003DFB12 /* PokeMonday.app */;
@@ -119,6 +136,7 @@
 			packageReferences = (
 				9B2686742DD16FCF00F00478 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				9B2686772DD16FDD00F00478 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				9B22E72E2DD9914300AF5F66 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9B4807A62DD0D2B6003DFB12 /* Products */;
@@ -348,6 +366,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		9B22E72E2DD9914300AF5F66 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.3.2;
+			};
+		};
 		9B2686742DD16FCF00F00478 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -367,6 +393,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9B22E72F2DD9914300AF5F66 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9B22E72E2DD9914300AF5F66 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		9B2686752DD16FCF00F00478 /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9B2686742DD16FCF00F00478 /* XCRemoteSwiftPackageReference "RxSwift" */;
@@ -376,6 +407,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9B2686772DD16FDD00F00478 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		9BC9F8B22DD9A92B0014DED7 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9B2686742DD16FCF00F00478 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		9BC9F8B42DD9A92B0014DED7 /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9B2686742DD16FCF00F00478 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

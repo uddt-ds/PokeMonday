@@ -8,7 +8,6 @@
 import Foundation
 import RxSwift
 
-// 추후 RxURLSession 공부 후 적용 예정
 //MARK: 네트워크 담당하는 클래스
 final class NetworkManager {
 
@@ -48,7 +47,7 @@ final class NetworkManager {
                 guard let data = data,
                       let response = response as? HTTPURLResponse,
                       (200..<300).contains(response.statusCode) else {
-                    observer(.failure(NetworkError.dataFetchFail))
+                    observer(.failure(NetworkError.failRequest))
                     return
                 }
 

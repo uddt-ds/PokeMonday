@@ -1,6 +1,6 @@
 import Foundation
 
-// 포켓몬 영어 이름을 한국어로 변환해주는 enum
+// MARK: 포켓몬 이름을 한국어로 변환해주는 enum
 enum PokemonTranslator {
   // 영어 이름과 한국어 이름 매핑 테이블
   private static let koreanNames: [String: String] = [
@@ -1037,6 +1037,7 @@ enum PokemonTranslator {
   }
 }
 
+// MARK: 타입 이름을 한국어로 변환해주는 enum
 enum PokemonTypeName: String, CaseIterable, Codable {
     case normal
     case fire
