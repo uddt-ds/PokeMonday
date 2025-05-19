@@ -7,6 +7,7 @@
 
 import Foundation
 
+// 포켓몬 세부 정보 데이터
 struct DetailPokeData: Decodable {
     let height: Int
     let id: Int

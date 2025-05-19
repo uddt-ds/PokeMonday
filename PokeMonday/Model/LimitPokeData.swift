@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MainViewModel에서 사용하는 제한된 포켓몬 데이터
 struct LimitPokeData: Decodable {
     let count: Int
     let next: String

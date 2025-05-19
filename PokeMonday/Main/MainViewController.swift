@@ -43,7 +43,6 @@ final class MainViewController: BaseViewController {
                                 forCellWithReuseIdentifier: String(describing: MainCollectionViewCell.self)
         )
         collectionView.backgroundColor = .darkRed
-        collectionView.isPagingEnabled = true
     }
 
     override func setupConstraints() {
@@ -61,13 +60,14 @@ final class MainViewController: BaseViewController {
         }
     }
 
-
+    // MARK: CompositionalLayout 적용
     private func setCompositionalLayout() -> UICollectionViewCompositionalLayout {
         let layout = UICollectionViewCompositionalLayout(section: createCollectionViewSection())
         return layout
     }
 
 
+    // MARK: CollectionView 내부 세팅
     private func createCollectionViewSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1/3),
@@ -89,6 +89,7 @@ final class MainViewController: BaseViewController {
         return section
     }
 
+    // MARK: 데이터 바인딩하는 메서드
     private func bind() {
         viewModel.limitPokeRelay
             .asDriver(onErrorDriveWith: .empty())

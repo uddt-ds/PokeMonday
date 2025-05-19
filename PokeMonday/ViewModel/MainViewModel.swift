@@ -17,12 +17,14 @@ final class MainViewModel {
 
     private var offset = 0
 
+    // 무한 스크롤 적용을 위한 Flag
     var isInfiniteScroll = false
 
     init() {
         fetchLimitPokeData()
     }
 
+    // url 뒤에 들어가는 offset 값을 변경해주는 메서드
     func offsetChange() {
         if !isInfiniteScroll {
             offset = 0

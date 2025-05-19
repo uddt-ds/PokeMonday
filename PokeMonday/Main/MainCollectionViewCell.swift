@@ -31,7 +31,9 @@ final class MainCollectionViewCell: BaseCollectionViewCell {
         imageView.backgroundColor = .white
     }
 
+    // 포켓몬스터 이미지를 불러오는 메서드
     func updatePokeImage(imageData: LimitPokeData.shortInfoResult) {
+        // url 뒤 id 값을 받아오기 위한 로직
         if imageData.url.count > 26 {
             let num = imageData.url.count - 26
             let rawId = imageData.url.suffix(num)
